@@ -7,6 +7,10 @@
   pointer-events: none;
 }
 
+#unrequestable-message-wrapper {
+  display: none;
+}
+
 .visually-hidden {
   clip-path: inset(100%);
   clip: rect(1px, 1px, 1px, 1px);
@@ -15,4 +19,13 @@
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+.aeon-request-message {
+  display: inline-grid;
+  justify-items: left;
+}
+
+.aeon-request-qualifier {
+  font-size: 14px;
 }
