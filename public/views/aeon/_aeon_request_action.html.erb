@@ -2,6 +2,21 @@
 Rails.logger.info("Aeon Fulfillment Plugin") { "Initializing Plugin..." }
 
 mapper = AeonRecordMapper.mapper_for(record)
+
+request_message =  t('plugins.aeon_fulfillment.request_button_label')
+request_qualifier = nil
+if @result.resolved_top_container && @result.resolved_top_container['container_locations']
+  loc = @result.resolved_top_container['container_locations'].select {|cl| cl['status'] == 'current'}.first
+  unless loc.nil?
+    if loc['_resolved'] && loc['_resolved']['building'] =~ /records/i
+      request_message = t('plugins.aeon_fulfillment.aeon_offsite_request_label')
+      request_qualifier = t('plugins.aeon_fulfillment.aeon_next_day')
+    elsif loc['_resolved'] && loc['_resolved']['building'] =~ /maine/i
+      request_message = t('plugins.aeon_fulfillment.aeon_offsite_request_label')
+      request_qualifier = t('plugins.aeon_fulfillment.aeon_two_weeks')
+    end
+  end
+end
 %>
 
 <% if mapper.configured? %>
@@ -30,11 +45,18 @@ mapper = AeonRecordMapper.mapper_for(record)
         <% end %>
       <% end %>
 
-      <button type="submit" class="btn page_action request btn-default" title="<%= t('plugins.aeon_fulfillment.request_button_label') %>">
-        <i class="<%= t('plugins.aeon_fulfillment.request_button_icon') %>" aria-hidden="true"></i><br/><%= t('plugins.aeon_fulfillment.request_button_label') %>
-        <% unless mapper.repo_settings.fetch(:request_in_new_tab, false) %><span class="visually-hidden">opens in new window</span><% end %>
+      <button type="submit" class="btn page_action request btn-default aeon-request-button" title="<%= request_message %>">
+        <span class="material-symbols-outlined">open_in_new</span>
+        <span class="aeon-request-message">
+          <span><%= request_message %></span>
+          <% unless request_qualifier.nil? %>
+          <span class="aeon-request-qualifier"><%= request_qualifier %></span>
+          <% end %>
+        </span>
       </button>
     <% end %>
+
+
 
   <% end %>
 <% else %>
