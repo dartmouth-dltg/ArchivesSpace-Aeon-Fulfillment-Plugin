@@ -23,6 +23,7 @@
 
 .aeon-request-message {
   display: inline-grid;
+  align-content: center;
   justify-items: left;
 }
 
