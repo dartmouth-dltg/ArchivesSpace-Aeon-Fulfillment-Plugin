@@ -46,7 +46,8 @@ end
       <% end %>
 
       <button type="submit" class="btn page_action request btn-default aeon-request-button" title="<%= request_message %>">
-        <span class="material-symbols-outlined">open_in_new</span>
+        <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>
+        <% unless mapper.repo_settings.fetch(:request_in_new_tab, false) %><span class="visually-hidden">opens in new window</span><% end %>
         <span class="aeon-request-message">
           <span><%= request_message %></span>
           <% unless request_qualifier.nil? %>
