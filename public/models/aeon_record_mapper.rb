@@ -403,7 +403,7 @@ class AeonRecordMapper
             mappings["digital_objects"] = digital_instances.map{|d| d['digital_object']['ref']}.join(';')
         end
 
-        mappings['restrictions_apply'] = json['restrictions_apply']
+        mappings['restrictions_apply'] = self.record.raw['custom_restrictions_u_sstr'].nil? ? json['restrictions_apply'] : self.record.raw['custom_restrictions_u_sstr'].count > 0
         mappings['display_string'] = json['display_string']
 
         instances = self.container_instances
