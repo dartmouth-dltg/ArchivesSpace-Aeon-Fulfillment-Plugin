@@ -41,7 +41,7 @@ class AeonResourceMapper < AeonRecordMapper
         mappings['finding_aid_series_statement'] = json['finding_aid_series_statement']
         mappings['finding_aid_status'] = json['finding_aid_status']
         mappings['finding_aid_note'] = json['finding_aid_note']
-        mappings['restrictions_apply'] = json['restrictions']
+        mappings['restrictions_apply'] = self.record.raw['custom_restrictions_u_sstr'].nil? ? json['restrictions'] : self.record.raw['custom_restrictions_u_sstr'].count > 0
 
         mappings
     end
