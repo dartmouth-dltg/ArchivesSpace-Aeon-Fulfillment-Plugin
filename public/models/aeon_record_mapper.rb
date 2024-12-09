@@ -369,6 +369,7 @@ class AeonRecordMapper
                 .flatten
                 .select { |subnote| subnote['content'].present? and subnote['publish'] == true}
                 .map { |subnote| subnote['content'] }
+                .reject { |content| content.match?(/Unrestricted/i) }
                 .flatten
                 .join("; ")
         end
