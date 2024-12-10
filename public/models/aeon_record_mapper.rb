@@ -305,7 +305,9 @@ class AeonRecordMapper
                         .gsub(/Man\./,'')
                         .gsub(enum, '')
                         .strip
-                    collection_name += ' '
+                    unless collection_name == ''
+                        collection_name += ' '
+                    end
                 else 
                     collection_name = ''
                 end
