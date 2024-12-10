@@ -20,10 +20,25 @@ class AeonResourceMapper < AeonRecordMapper
         end
 
         resource_identifier = [ json['id_0'], json['id_1'], json['id_2'], json['id_3'] ]
-        mappings['collection_id'] = resource_identifier
+        collection_id = resource_identifier
             .reject {|id_comp| id_comp.blank?}
             .join('-')
 
+        if json['user_defined'] && json['user_defined']['enum_1']
+            enum = json['user_defined']['enum_1']
+            collection_name = I18n.t("enumerations.user_defined_enum_1.#{enum}")
+                .gsub(/Rauner/,'')
+                .gsub(/Manuscript/,'')
+                .gsub(/\-/,'')
+                .gsub(/Man\./,'')
+                .gsub(enum, '')
+                .strip
+            collection_name += ' '
+        else 
+            collection_name = ''
+        end
+        
+        mappings['collection_id'] = collection_name + collection_id
         mappings['collection_title'] = strip_mixed_content(self.record['title'])
 
         mappings['ead_id'] = json['ead_id']
