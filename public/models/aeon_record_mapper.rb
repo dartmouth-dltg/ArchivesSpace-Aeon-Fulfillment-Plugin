@@ -294,10 +294,25 @@ class AeonRecordMapper
                     resource_obj[0]['id_3']
                 ]
 
-                mappings['collection_id'] = collection_id_components
+                collection_id = collection_id_components
                     .reject {|id_comp| id_comp.blank?}
                     .join('-')
 
+                if resource_obj[0]['user_defined'] && resource_obj[0]['user_defined']['enum_1']
+                    enum = resource_obj[0]['user_defined']['enum_1']
+                    collection_name = I18n.t("enumerations.user_defined_enum_1.#{enum}")
+                        .gsub(/Rauner/,'')
+                        .gsub(/Manuscript/,'')
+                        .gsub(/\-/,'')
+                        .gsub(/Man\./,'')
+                        .gsub(enum, '')
+                        .strip
+                    collection_name += ' '
+                else 
+                    collection_name = ''
+                end
+                
+                mappings['collection_id'] = collection_name + collection_id
                 mappings['collection_title'] = resource_obj[0]['title']
             end
         end
@@ -471,6 +486,8 @@ class AeonRecordMapper
                     request["instance_top_container_location_#{instance_count}"] = location['title']
                     request["instance_top_container_location_id_#{instance_count}"] = location_id
                     request["instance_top_container_location_building_#{instance_count}"] = location['building']
+                elsif json['id_0'].match?(/mss\s/i)
+                    request["instance_top_container_location_#{instance_count}"] = 'Individual Manuscript'
                 end
 
                 collection = top_container_resolved['collection']
