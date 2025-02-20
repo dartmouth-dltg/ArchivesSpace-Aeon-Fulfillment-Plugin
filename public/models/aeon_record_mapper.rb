@@ -486,8 +486,10 @@ class AeonRecordMapper
                     request["instance_top_container_location_#{instance_count}"] = location['title']
                     request["instance_top_container_location_id_#{instance_count}"] = location_id
                     request["instance_top_container_location_building_#{instance_count}"] = location['building']
-                elsif json['id_0'].match?(/\d{6}/i)
+                elsif json['id_0'] && json['id_0'].match?(/\d{6}/i)
                     request["instance_top_container_location_#{instance_count}"] = 'Individual Manuscript'
+                else
+                    request["instance_top_container_location_#{instance_count}"] = 'No Location Found'
                 end
 
                 collection = top_container_resolved['collection']
