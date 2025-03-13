@@ -8,12 +8,14 @@ request_qualifier = nil
 if @result.resolved_top_container && @result.resolved_top_container['container_locations']
   loc = @result.resolved_top_container['container_locations'].select {|cl| cl['status'] == 'current'}.first
   unless loc.nil?
-    if loc['_resolved'] && loc['_resolved']['building'].match?(/records|lcsf/i)
-      request_message = t('plugins.aeon_fulfillment.aeon_offsite_request_label')
-      request_qualifier = t('plugins.aeon_fulfillment.aeon_next_day')
-    elsif loc['_resolved'] && loc['_resolved']['building'].match?(/maine/i)
-      request_message = t('plugins.aeon_fulfillment.aeon_offsite_request_label')
-      request_qualifier = t('plugins.aeon_fulfillment.aeon_two_weeks')
+    if loc['_resolved'] && loc['_resolved']['building']
+      if loc['_resolved']['building'].match?(/records|lcsf/i)
+        request_message = t('plugins.aeon_fulfillment.aeon_offsite_request_label')
+        request_qualifier = t('plugins.aeon_fulfillment.aeon_next_day')
+      elsif loc['_resolved']['building'].match?(/maine/i)
+        request_message = t('plugins.aeon_fulfillment.aeon_offsite_request_label')
+        request_qualifier = t('plugins.aeon_fulfillment.aeon_two_weeks')
+      end
     end
   end
 end
