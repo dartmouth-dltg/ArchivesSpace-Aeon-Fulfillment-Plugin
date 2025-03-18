@@ -1,18 +1,18 @@
 class AeonResourceMapper < AeonRecordMapper
 
-    include ManipulateNode
+    include DartmouthAeonHelpers
 
     register_for_record_type(Resource)
 
-    def initialize(resource)
-        super(resource)
+    def initialize(resource_json)
+        super(resource_json)
     end
 
     # Override for AeonRecordMapper json_fields method.
-    def json_fields
+    def json_fields(idx = nil)
         mappings = super
 
-        json = self.record.json
+        json = ASUtils.json_parse(self.record['json'])
         return mappings unless json
 
         if json['repository_processing_note'] && json['repository_processing_note'].present?
@@ -58,7 +58,7 @@ class AeonResourceMapper < AeonRecordMapper
         mappings['finding_aid_series_statement'] = json['finding_aid_series_statement']
         mappings['finding_aid_status'] = json['finding_aid_status']
         mappings['finding_aid_note'] = json['finding_aid_note']
-        mappings['restrictions_apply'] = self.record.raw['custom_restrictions_u_sbool'].nil? ? json['restrictions'] : self.record.raw['custom_restrictions_u_sbool'].first
+        mappings['restrictions_apply'] = self.record['custom_restrictions_u_sbool'].nil? ? json['restrictions'] : self.record['custom_restrictions_u_sbool'].first
 
         mappings
     end
