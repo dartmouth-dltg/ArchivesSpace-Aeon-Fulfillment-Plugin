@@ -1,0 +1,9 @@
+en:
+  plugins:
+    aeon_fulfillment:
+      request_button_icon: fa fa-external-link fa-external-link-alt fa-3x
+      request_button_label: Request All (Aeon)
+      requesting_disabled: Requesting is not available for this record.
+      aeon_offsite_request_label: Request offsite item
+      aeon_two_weeks: Available in two weeks
+      aeon_next_day: Available in two days

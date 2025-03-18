@@ -20,7 +20,7 @@ class AeonArchivalObjectMapper < AeonRecordMapper
             mappings['repository_processing_note'] = json['repository_processing_note']
         end
 
-        mappings['restrictions_apply'] = self.record.raw['custom_restrictions_u_sstr'].nil? ? json['restrictions_apply'] : self.record.raw['custom_restrictions_u_sstr'].count > 0
+        mappings['restrictions_apply'] = self.record.raw['custom_restrictions_u_sbool'].nil? ? json['restrictions_apply'] : self.record.raw['custom_restrictions_u_sbool'].first
 
         mappings
     end
