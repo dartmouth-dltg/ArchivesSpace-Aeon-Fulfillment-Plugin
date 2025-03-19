@@ -380,9 +380,9 @@ class AeonRecordMapper
             mappings['repo_name'] = resolved_repository['name']
         end
 
-        if json['linked_agents']
-            mappings['creators'] = json['linked_agents']
-                .select { |cr| cr.present? && cr['role'] == 'creator'}
+        if self.record['creators']
+            mappings['creators'] = self.record['creators']
+                .select { |cr| cr.present? }
                 .map { |cr| cr.strip }
                 .join("; ")
         end
