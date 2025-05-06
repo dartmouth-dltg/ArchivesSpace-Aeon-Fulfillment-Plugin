@@ -20,7 +20,7 @@ module DartmouthAeonHelpers
 
   def aeon_helper_get_record(uri)
     resolve = ['ancestors:id', 'top_container_uri_u_sstr:id']
-    response = JSONModel::HTTP.post_form("/search/records", {"uri[]" =>  [uri], "resolve[]" => resolve})
+    response = JSONModel::HTTP.post_form("/plugins/component_report/search/records", {"uri[]" =>  [uri], "resolve[]" => resolve})
     results = ASUtils.json_parse(response.body)['results']
     if results.count == 1
       results[0]
@@ -30,7 +30,7 @@ module DartmouthAeonHelpers
   end
 
   def aeon_helper_get_location(location_id)
-    response = JSONModel::HTTP.get_json("#{location_id}")
+    JSONModel::HTTP.get_json("#{location_id}")
   end
   
 end
