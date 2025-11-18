@@ -124,6 +124,8 @@ class AeonRecordMapper
             return true
         elsif self.requestable_based_on_archival_record_level? == false
             return true
+        elsif self.record_has_top_containers? == false
+            return true
         elsif self.repo_settings[:top_container_mode] == true && self.record_has_top_containers? == false
             return true
         elsif self.repo_settings[:requests_permitted_for_containers_only] == true && self.record_has_top_containers? == false
@@ -531,7 +533,7 @@ class AeonRecordMapper
     # instances. If the current jsonmodel does not have any top container instances, the
     # method will recurse up the record's resource tree, until it finds a record that does
     # have top container instances, and will pull the list of instances from there.
-    def find_container_instances (record_json)
+    def find_container_instances(record_json)
         
         current_uri = record_json['uri']
         
