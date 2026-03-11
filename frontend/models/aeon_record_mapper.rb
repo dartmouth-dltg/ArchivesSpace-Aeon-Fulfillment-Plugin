@@ -397,7 +397,7 @@ class AeonRecordMapper
         if json['notes']
             mappings['userestrict'] = json['notes']
                 .select{ |n| n['type'] == 'userestrict'}
-                .map { |note| note['subnotes'] }.flatten
+                .map { |note| note['subnotes'] }.flatten.compact
                 .select { |subnote| subnote['content'].present? and subnote['publish'] == true }
                 .map { |subnote| subnote['content'] }.flatten
                 .join("; ") 
@@ -441,6 +441,7 @@ class AeonRecordMapper
                 .select { |note| note['type'] == 'accessrestrict' and note['subnotes'].present? }
                 .map { |note| note['subnotes'] }
                 .flatten
+                .compact
                 .select { |subnote| subnote['content'].present? and subnote['publish'] == true}
                 .map { |subnote| subnote['content'] }
                 .reject { |content| content.match?(/Unrestricted/i) }
