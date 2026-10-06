@@ -520,7 +520,7 @@ class AeonRecordMapper
         mappings["instance_top_container_uri"] = top_container_resolved['uri']
 
         if (top_container_resolved['container_locations'])
-            mappings["instance_top_container_location_note"] = top_container_resolved['container_locations'].map{ |l| l['note']}.join{';'}
+            mappings["instance_top_container_location_note"] = top_container_resolved['container_locations'].map{ |l| l['note']}.join(';')
         end
 
         mappings["requestable"] = (top_container_resolved['active_restrictions'] || [])
@@ -529,9 +529,9 @@ class AeonRecordMapper
             .select{ |ar| (self.repo_settings[:hide_button_for_access_restriction_types] || []).include?(ar)}
             .empty?
 
-        locations = top_container_resolved["container_locations"]
+        locations = top_container_resolved["container_locations"] || []
         if locations.any?
-            location_id = locations.sort_by { |l| l["start_date"]}.last()["ref"]
+            location_id = locations.sort_by { |l| l["start_date"].to_s }.last()["ref"]
             location = aeon_helper_get_location(location_id)
             mappings["instance_top_container_location"] = location['title']
             mappings["instance_top_container_location_id"] = location_id

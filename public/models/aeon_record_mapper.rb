@@ -510,7 +510,7 @@ class AeonRecordMapper
                 request["instance_top_container_uri_#{instance_count}"] = top_container_resolved['uri']
 
                 if (top_container_resolved['container_locations'])
-                    request["instance_top_container_location_note_#{instance_count}"] = top_container_resolved['container_locations'].map{ |l| l['note']}.join{';'}
+                    request["instance_top_container_location_note_#{instance_count}"] = top_container_resolved['container_locations'].map{ |l| l['note']}.join(';')
                 end
 
                 request["requestable_#{instance_count}"] = (top_container_resolved['active_restrictions'] || [])
@@ -519,9 +519,9 @@ class AeonRecordMapper
                     .select{ |ar| (self.repo_settings[:hide_button_for_access_restriction_types] || []).include?(ar)}
                     .empty?
 
-                locations = top_container_resolved["container_locations"]
+                locations = top_container_resolved["container_locations"] || []
                 if locations.any?
-                    location_id = locations.sort_by { |l| l["start_date"]}.last()["ref"]
+                    location_id = locations.sort_by { |l| l["start_date"].to_s }.last()["ref"]
                     location = archivesspace.get_location(location_id)
                     request["instance_top_container_location_#{instance_count}"] = location['title']
                     request["instance_top_container_location_id_#{instance_count}"] = location_id
