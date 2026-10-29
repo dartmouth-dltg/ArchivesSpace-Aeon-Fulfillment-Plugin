@@ -337,6 +337,12 @@ class AeonRecordMapper
 
         json = ASUtils.json_parse(self.record['json'])
 
+        # FIXME: the local plugin's indexer (local/indexer/dartmouth_indexer.rb) no longer
+        # resolves 'resource', so json['resource']['_resolved'] is nil in the staff Solr doc
+        # and collection_id/collection_title come out empty. aeon_helper_get_record already
+        # resolves 'ancestors:id', so take the resource from there instead, e.g.
+        #   resource_doc = Array(self.record.dig('_resolved_ancestors', json.dig('resource', 'ref'))).first
+        #   resource_obj = resource_doc && ASUtils.json_parse(resource_doc['json'])
         resource = json['resource']
         if resource
             resource_obj = resource['_resolved']
@@ -577,7 +583,8 @@ class AeonRecordMapper
     # method will recurse up the record's resource tree, until it finds a record that does
     # have top container instances, and will pull the list of instances from there.
     def find_container_instances (record_json)
-        
+        return [] unless record_json
+
         current_uri = record_json['uri']
         
         @logger.info("Aeon Fulfillment Plugin") { "Checking \"#{current_uri}\" for Top Container instances..." }
@@ -585,7 +592,7 @@ class AeonRecordMapper
             @logger.debug("Aeon Fulfillment Plugin") { "#{record_json.to_json}" }
         end
 
-        instances = record_json['instances']
+        instances = (record_json['instances'] || [])
             .reject { |instance| instance['digital_object'] }
 
         if instances.any?
