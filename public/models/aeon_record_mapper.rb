@@ -138,6 +138,8 @@ class AeonRecordMapper
             return true
         elsif self.requestable_based_on_archival_record_level? == false
             return true
+        elsif self.record_has_top_containers? == false
+            return true
         elsif (self.repo_settings[:requests_permitted_for_containers_only] == true ||
                self.repo_settings[:top_container_mode] == true) &&
               self.record_has_top_containers? == false
